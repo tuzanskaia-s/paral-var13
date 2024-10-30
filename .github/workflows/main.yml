@@ -1,0 +1,30 @@
+name: Run C++ Files Sequentially
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-cpp-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up C++ build environment
+        run: sudo apt-get install g++
+
+      - name: Compile and run partonegitvar13.cpp
+        run: |
+          g++ partonegitvar13.cpp -o partonegitvar13
+          ./partonegitvar13
+
+      - name: Compile and run test1234.cpp
+        run: |
+          g++ test1234.cpp -o test1234
+          ./test1234
