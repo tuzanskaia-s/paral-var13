@@ -13,10 +13,15 @@ auto find_all_omp(Iterator begin, Iterator end, const T& value) {
     std::vector<Iterator> result;
     size_t container_size = std::distance(begin, end);
     int num_threads = (container_size < 1000) ? 2 : (container_size < 10000 ? 4 : 8);
+    int num_threads_used = 0;
 
 #pragma omp parallel num_threads(num_threads)
     {
         std::vector<Iterator> local_result;
+
+        // Capture the number of threads used, once per parallel section
+#pragma omp single
+        num_threads_used = omp_get_num_threads();
 
 #pragma omp for nowait
         for (size_t i = 0; i < container_size; ++i) {
@@ -31,6 +36,7 @@ auto find_all_omp(Iterator begin, Iterator end, const T& value) {
         result.insert(result.end(), local_result.begin(), local_result.end());
     }
 
+    std::cout << "Threads used: " << num_threads_used << std::endl;
     return result;
 }
 
@@ -100,11 +106,4 @@ int main() {
     test_find_all_omp(empty_vector, 1);
 
     // Test with a vector of vectors
-    std::vector<std::vector<int>> complex_vector(1000, { 1, 2, 3 });
-    complex_vector[200] = { 4, 5, 6 };  // Change one element
-    std::cout << "\nTest with vector of vectors, searching for {4, 5, 6}:" << std::endl;
-    test_find_all_single_thread(complex_vector, std::vector<int>{4, 5, 6});
-    test_find_all_omp(complex_vector, std::vector<int>{4, 5, 6});
-
-    return 0;
-}
+    std::vector<std::vector
