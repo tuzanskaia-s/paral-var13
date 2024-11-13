@@ -26,5 +26,5 @@ jobs:
 
       - name: Compile and run testpart2.cpp
         run: |
-          g++ testpart2.cpp -o testpart2
+          g++ -fopenmp testpart2.cpp -o testpart2
           ./testpart2
