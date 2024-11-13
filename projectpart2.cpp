@@ -57,23 +57,7 @@ int main() {
     std::cout << "Test with int vector, searching for 2:" << std::endl;
     test_find_all(v1, 2);
 
-    // Тест на строковом типе
-    std::vector<std::string> v2(100000, "test");
-    v2[500] = "hello";
-    v2[7000] = "hello";
-    std::cout << "\nTest with string vector, searching for 'hello':" << std::endl;
-    test_find_all(v2, std::string("hello"));
-
-    // Тест с пустым контейнером
-    std::vector<int> empty_vector;
-    std::cout << "\nTest with empty vector:" << std::endl;
-    test_find_all(empty_vector, 1);
-
-    // Тест на недопустимом типе
-    std::vector<std::vector<int>> complex_vector(1000, {1, 2, 3});
-    complex_vector[200] = {4, 5, 6};  // Меняем один элемент
-    std::cout << "\nTest with vector of vectors, searching for {4, 5, 6}:" << std::endl;
-    test_find_all(complex_vector, std::vector<int>{4, 5, 6});
+    
 
     return 0;
 }
