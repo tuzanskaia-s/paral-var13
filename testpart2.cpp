@@ -106,4 +106,11 @@ int main() {
     test_find_all_omp(empty_vector, 1);
 
     // Test with a vector of vectors
-    std::vector<std::vector
+    std::vector<std::vector<int>> complex_vector(1000, { 1, 2, 3 });
+    complex_vector[200] = { 4, 5, 6 };  // Change one element
+    std::cout << "\nTest with vector of vectors, searching for {4, 5, 6}:" << std::endl;
+    test_find_all_single_thread(complex_vector, std::vector<int>{4, 5, 6});
+    test_find_all_omp(complex_vector, std::vector<int>{4, 5, 6});
+
+    return 0;
+}
