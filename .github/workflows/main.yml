@@ -18,6 +18,16 @@ jobs:
 
       - name: Set up C++ build environment
         run: sudo apt-get install g++
+        
+      - name: Compile and run projectpart2.cpp
+        run: |
+          g++ projectpart2.cpp -o projectpart2
+          ./projectpart2
+
+      - name: Compile and run testpart2.cpp
+        run: |
+          g++ testpart2.cpp -o testpart2
+          ./testpart2
 
       - name: Compile and run projectpart1.cpp
         run: |
