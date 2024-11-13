@@ -112,5 +112,13 @@ int main() {
     test_find_all_single_thread(complex_vector, std::vector<int>{4, 5, 6});
     test_find_all_omp(complex_vector, std::vector<int>{4, 5, 6});
 
+    // Float vector test (asking to find char)
+    std::vector<float> v3(1000, 1.0f);
+    v3[250000] = 2.5f;
+    v3[750000] = 2.5f;
+    std::cout << "\nTest with float vector, searching for a (error check):" << std::endl;
+    test_find_all_single_thread(v3, 'a');
+    test_find_all(v3, 'a');
+
     return 0;
 }
