@@ -81,7 +81,7 @@ int main() {
         s.join();
     }
 
-    // Простейшие проверки после завершения работы потоков
+   
     // 1. Проверяем, что каждый студент получил не более двух билетов
     for (int tickets : tickets_for_students) {
         assert(tickets <= 2 && "Each student should receive no more than 2 tickets.");
