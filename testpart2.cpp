@@ -4,11 +4,19 @@
 #include <omp.h>
 #include <chrono>
 #include <type_traits>
+#include <typeinfo>
 
 // Multi-threaded find_all using OpenMP
 template <typename Iterator, typename T>
 auto find_all_omp(Iterator begin, Iterator end, const T& value) {
-    static_assert(std::is_default_constructible<T>::value, "Value type must be default constructible");
+    using ValueType = typename std::iterator_traits<Iterator>::value_type;
+    
+    // Check for type compatibility at runtime
+    if (typeid(ValueType) != typeid(T)) {
+        std::cout << "Error: Incorrect type. Expected type '" << typeid(ValueType).name()
+                  << "' but got '" << typeid(T).name() << "'." << std::endl;
+        return std::vector<Iterator>{};  // Return an empty vector
+    }
 
     std::vector<Iterator> result;
     size_t container_size = std::distance(begin, end);
@@ -19,7 +27,6 @@ auto find_all_omp(Iterator begin, Iterator end, const T& value) {
     {
         std::vector<Iterator> local_result;
 
-        // Capture the number of threads used, once per parallel section
 #pragma omp single
         num_threads_used = omp_get_num_threads();
 
@@ -43,7 +50,14 @@ auto find_all_omp(Iterator begin, Iterator end, const T& value) {
 // Single-threaded find_all without OpenMP
 template <typename Iterator, typename T>
 auto find_all_single_thread(Iterator begin, Iterator end, const T& value) {
-    static_assert(std::is_default_constructible<T>::value, "Value type must be default constructible");
+    using ValueType = typename std::iterator_traits<Iterator>::value_type;
+    
+    // Check for type compatibility at runtime
+    if (typeid(ValueType) != typeid(T)) {
+        std::cout << "Error: Incorrect type. Expected type '" << typeid(ValueType).name()
+                  << "' but got '" << typeid(T).name() << "'." << std::endl;
+        return std::vector<Iterator>{};  // Return an empty vector
+    }
 
     std::vector<Iterator> result;
     for (Iterator it = begin; it != end; ++it) {
@@ -114,11 +128,11 @@ int main() {
 
     // Float vector test (asking to find char)
     std::vector<float> v3(1000, 1.0f);
-    v3[250000] = 2.5f;
-    v3[750000] = 2.5f;
-    std::cout << "\nTest with float vector, searching for a (error check):" << std::endl;
+    v3[250] = 2.5f;
+    v3[750] = 2.5f;
+    std::cout << "\nTest with float vector, searching for 'a' (error check):" << std::endl;
     test_find_all_single_thread(v3, 'a');
-    test_find_all(v3, 'a');
+    test_find_all_omp(v3, 'a');
 
     return 0;
 }
