@@ -1,0 +1,34 @@
+name: Run MPI Program
+
+on:
+  push:
+    branches:
+      - main  # Trigger workflow on push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger workflow on pull requests to the main branch
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code from the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Install MPI dependencies
+      - name: Install MPI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mpich libmpich-dev
+
+      # Step 3: Compile the program
+      - name: Compile MPI program
+        run: |
+          mpicxx -o output projectpart3.cpp
+
+      # Step 4: Run the program with 102 processes
+      - name: Run MPI program
+        run: |
+          mpirun --allow-run-as-root --oversubscribe -np 102 ./output
