@@ -28,7 +28,7 @@ jobs:
         run: |
           mpicxx -o output projectpart3.cpp
 
-      # Step 4: Run the program with 102 processes
+      # Step 4: Run the program with 102 processes (without oversubscribe)
       - name: Run MPI program
         run: |
-          mpirun --oversubscribe -np 102 ./output
+          mpirun -np 102 ./output
