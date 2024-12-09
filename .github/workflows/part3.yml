@@ -31,4 +31,4 @@ jobs:
       # Step 4: Run the program with 102 processes
       - name: Run MPI program
         run: |
-          mpirun --allow-run-as-root --oversubscribe -np 102 ./output
+          mpirun --oversubscribe -np 102 ./output
