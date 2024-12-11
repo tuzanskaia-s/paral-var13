@@ -26,15 +26,24 @@ jobs:
       # Step 3: Compile the program
       - name: Compile MPI program
         run: |
-          mpicxx -o output projectpart3.cpp
-          mpicxx -o output test1.cpp
-          mpicxx -o output test2.cpp
-          mpicxx -o output test3.cpp
-          
+          mpicxx -o output_projectpart3 projectpart3.cpp
+          mpicxx -o output_test1 test1.cpp
+          mpicxx -o output_test2 test2.cpp
+          mpicxx -o output_test3 test3.cpp
 
-          
-
-      # Step 4: Run the program with 102 processes (without oversubscribe)
-      - name: Run MPI program
+      # Step 4: Run the programs
+      - name: Run ProjectPart3 MPI program
         run: |
-          mpirun -np 102 ./output
+          mpirun -np 102 ./output_projectpart3
+
+      - name: Run Test1 MPI program
+        run: |
+          mpirun -np 102 ./output_test1
+
+      - name: Run Test2 MPI program
+        run: |
+          mpirun -np 102 ./output_test2
+
+      - name: Run Test3 MPI program
+        run: |
+          mpirun -np 102 ./output_test3
