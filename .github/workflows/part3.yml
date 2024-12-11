@@ -27,6 +27,12 @@ jobs:
       - name: Compile MPI program
         run: |
           mpicxx -o output projectpart3.cpp
+          mpicxx -o output test1.cpp
+          mpicxx -o output test2.cpp
+          mpicxx -o output test3.cpp
+          
+
+          
 
       # Step 4: Run the program with 102 processes (without oversubscribe)
       - name: Run MPI program
